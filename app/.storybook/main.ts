@@ -17,10 +17,20 @@ const config: StorybookConfig = {
     "options": {}
   },
   "viteFinal": async (config) => {
+    const path = await import('path');
+
     // Add Tailwind v4 Vite plugin to Storybook
     const tailwindcss = await import('@tailwindcss/vite');
     config.plugins = config.plugins || [];
     config.plugins.push(tailwindcss.default());
+
+    // Configure path alias for @/ imports
+    config.resolve = config.resolve || {};
+    config.resolve.alias = {
+      ...config.resolve.alias,
+      "@": path.resolve(__dirname, "../src"),
+    };
+
     return config;
   }
 };
